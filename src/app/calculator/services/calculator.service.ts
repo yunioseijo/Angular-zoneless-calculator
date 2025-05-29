@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 
 const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-const operators = ['+', '-', '*', '/', '÷'];
+const operators = ['+', '-', '*', '/', '÷', 'x'];
 const specialOperators = ['+/-', '%', '.', '=', 'C', 'Backspace'];
 
 @Injectable({
@@ -96,6 +96,13 @@ export class CalculatorService {
       return;
     }
 
+    // Operador porcentaje
+    if (value === '%') {
+      const current = parseFloat(this.resultText());
+      this.resultText.set((current / 100).toString());
+      return;
+    }
+
     // Números
     if (numbers.includes(value)) {
       if (this.resultText() === '0') {
@@ -117,7 +124,7 @@ export class CalculatorService {
     const number1 = parseFloat(this.subResultText());
     const number2 = parseFloat(this.resultText());
 
-    let result = 0;
+    let result: number | string = 0;
 
     switch (this.lastOperator()) {
       case '+':
@@ -129,13 +136,16 @@ export class CalculatorService {
       case '*':
         result = number1 * number2;
         break;
-      case 'X':
+      case 'x':
         result = number1 * number2;
         break;
       case '/':
-        result = number1 / number2;
-        break;
       case '÷':
+        if (number2 === 0) {
+          this.resultText.set('Error');
+          this.subResultText.set('0');
+          return;
+        }
         result = number1 / number2;
         break;
     }
