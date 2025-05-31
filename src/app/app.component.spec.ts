@@ -24,7 +24,7 @@ describe('AppComponent', () => {
   });
 
   it('should render router-outlet', () => {
-    console.log(compiled);
+    // console.log(compiled);
      expect(compiled.querySelector('router-outlet') ).toBeTruthy();
   });
   it('should render router-outlet wrapped with css classes', () => {
